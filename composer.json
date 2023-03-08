@@ -40,5 +40,10 @@
     "test": [
       "phpcs --ignore=vendor --extensions=php --standard=PSR2 ."
     ]
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true
+    }
   }
 }
