@@ -25,19 +25,16 @@
   "autoload": {
     "psr-4": {
       "Roots\\Sage\\": ""
-    },
-    "files": [
-      "sage-lib.php"
-    ]
+    }
   },
   "require": {
     "php": ">=7.1",
-    "composer/installers": "~1.0",
-    "illuminate/view": "~5.6",
-    "illuminate/config": "~5.6"
+    "composer/installers": "^1.0",
+    "illuminate/view": "^5",
+    "illuminate/config": "^5"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "~3.3.1"
+    "squizlabs/php_codesniffer": "^3.3.1"
   },
   "scripts": {
     "test": [
