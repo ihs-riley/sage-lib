@@ -25,7 +25,10 @@
   "autoload": {
     "psr-4": {
       "Roots\\Sage\\": ""
-    }
+    },
+    "files": [
+      "sage-lib.php"
+    ]
   },
   "require": {
     "php": ">=7.1",
@@ -36,9 +39,6 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "~3.3.1"
   },
-  "files": [
-    "sage-lib.php"
-  ],
   "scripts": {
     "test": [
       "phpcs --ignore=vendor --extensions=php --standard=PSR2 ."
