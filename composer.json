@@ -1,8 +1,8 @@
 {
-  "name": "roots/sage-lib",
+  "name": "ihs-riley/sage-lib",
   "license": "MIT",
-  "description": "Library files for Sage Starter Theme",
-  "homepage": "https://roots.io/sage/",
+  "description": "Forked version of Roots Sage-Lib",
+  "type": "library",
   "authors": [
     {
       "name": "QWp6t",
@@ -18,17 +18,13 @@
   "keywords": [
     "wordpress"
   ],
-  "support": {
-    "issues": "https://github.com/roots/sage-lib/issues",
-    "forum": "https://discourse.roots.io/"
-  },
   "autoload": {
     "psr-4": {
       "Roots\\Sage\\": ""
     }
   },
   "require": {
-    "php": "^8.1",
+    "php": "*",
     "composer/installers": "~1.0",
     "illuminate/view": "~10.15",
     "illuminate/config": "~10.15"
