@@ -23,18 +23,22 @@ class JsonManifest implements ManifestInterface
      */
     public function __construct(string $manifestPath, string $distUri)
     {
-        $this->manifest = file_exists($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : [];
+        $this->manifest = [];
         $this->dist     = $distUri;
+
+        if (file_exists($manifestPath)) {
+            $this->manifest = json_decode(file_get_contents($manifestPath), true);
+        }
     }
 
     /** @inheritdoc */
-    public function get($asset)
+    public function get(string $asset): string
     {
         return $this->manifest[$asset] ?? $asset;
     }
 
     /** @inheritdoc */
-    public function getUri($asset): string
+    public function getUri(string $asset): string
     {
         return "{$this->dist}/{$this->get($asset)}";
     }

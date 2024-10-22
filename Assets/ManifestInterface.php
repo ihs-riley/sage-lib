@@ -17,7 +17,7 @@ interface ManifestInterface
      * @param string $asset The original name of the file before cache-busting
      * @return string
      */
-    public function get($asset);
+    public function get(string $asset): string;
 
     /**
      * Get the cache-busted URI
@@ -27,5 +27,5 @@ interface ManifestInterface
      * @param string $asset The original name of the file before cache-busting
      * @return string
      */
-    public function getUri($asset);
+    public function getUri(string $asset): string;
 }

@@ -2,7 +2,9 @@
 
 namespace Roots\Sage;
 
-class Config extends \Illuminate\Config\Repository
+use Illuminate\Config\Repository;
+
+class Config extends Repository
 {
     protected static $instance;
 }

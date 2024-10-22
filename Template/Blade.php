@@ -2,9 +2,12 @@
 
 namespace Roots\Sage\Template;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container as ContainerContract;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\View\Factory as FactoryContract;
 use Illuminate\View\Engines\CompilerEngine;
+use Illuminate\Contracts\View\Engine;
 use Illuminate\View\ViewFinderInterface;
 
 /**
@@ -22,6 +25,7 @@ use Illuminate\View\ViewFinderInterface;
  */
 class Blade
 {
+    /** @var FactoryContract */
     protected $env;
 
     public function __construct(FactoryContract $env)
@@ -33,8 +37,10 @@ class Blade
      * Get the compiler
      *
      * @return \Illuminate\View\Compilers\BladeCompiler
+     *
+     * @throws BindingResolutionException
      */
-    public function compiler()
+    public function compiler(): \Illuminate\View\Compilers\BladeCompiler
     {
         static $engineResolver;
 
@@ -49,11 +55,12 @@ class Blade
      * @param string $view
      * @param array $data
      * @param array $mergeData
+     *
      * @return string
      */
-    public function render($view, $data = [], $mergeData = [])
+    public function render(string $view, array $data = [], array $mergeData = []): string
     {
-        /** @var \Illuminate\Contracts\Filesystem\Filesystem $filesystem */
+        /** @var Filesystem $filesystem */
         $filesystem = $this->getContainer()['files'];
 
         return $this->{$filesystem->exists($view) ? 'file' : 'make'}($view, $data, $mergeData)->render();
@@ -63,9 +70,10 @@ class Blade
      * @param string $file
      * @param array $data
      * @param array $mergeData
+     *
      * @return string
      */
-    public function compiledPath($file, $data = [], $mergeData = [])
+    public function compiledPath(string $file, array $data = [], array $mergeData = []): string
     {
         $rendered = $this->file($file, $data, $mergeData);
         $engine   = $rendered->getEngine();
@@ -86,17 +94,15 @@ class Blade
 
     /**
      * @param string $file
+     *
      * @return string
      */
-    public function normalizeViewPath($file)
+    public function normalizeViewPath(string $file): string
     {
-        // Convert `\` to `/`
         $view = str_replace('\\', '/', $file);
 
-        // Add namespace to path if necessary
         $view = $this->applyNamespaceToPath($view);
 
-        // Remove unnecessary parts of the path
         $view = str_replace(
             array_merge(
                 $this->getContainer()['config']['view.paths'],
@@ -106,7 +112,6 @@ class Blade
             $view
         );
 
-        // Remove superfluous and leading slashes
         return ltrim(preg_replace('%//+%', '/', $view), '/');
     }
 
@@ -114,20 +119,27 @@ class Blade
      * Convert path to view namespace
      *
      * @param string $path
+     *
      * @return string
      */
-    public function applyNamespaceToPath($path)
+    public function applyNamespaceToPath(string $path): string
     {
         /** @var ViewFinderInterface $finder */
         $finder = $this->getContainer()['view.finder'];
+
         if (!method_exists($finder, 'getHints')) {
             return $path;
         }
+
         $delimiter = $finder::HINT_PATH_DELIMITER;
         $hints     = $finder->getHints();
-        $view      = array_reduce(array_keys($hints), function ($view, $namespace) use ($delimiter, $hints) {
-            return str_replace($hints[$namespace], $namespace . $delimiter, $view);
-        }, $path);
+        $view      = array_reduce(
+            array_keys($hints),
+            function ($view, $namespace) use ($delimiter, $hints) {
+                return str_replace($hints[$namespace], $namespace . $delimiter, $view);
+            },
+            $path
+        );
 
         return preg_replace("%{$delimiter}[\\/]*%", $delimiter, $view);
     }
@@ -137,9 +149,10 @@ class Blade
      *
      * @param string $method
      * @param array $params
+     *
      * @return mixed
      */
-    public function __call($method, $params)
+    public function __call(string $method, array $params)
     {
         return call_user_func_array([$this->env, $method], $params);
     }
