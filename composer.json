@@ -24,10 +24,10 @@
     }
   },
   "require": {
-    "php": "*",
-    "composer/installers": "~1.0",
-    "illuminate/view": "~11",
-    "illuminate/config": "~11"
+    "php": "^8.0 || ^8.1 || ^8.2 || ^8.3",
+    "composer/installers": "^2.0",
+    "illuminate/view": "^8.82",
+    "illuminate/config": "^8.82"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*"
